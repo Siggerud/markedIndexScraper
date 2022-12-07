@@ -3,6 +3,7 @@
 
 from marketIndexScraper import getMarketIndex
 from tkinter import *
+import sys
 
 # layout for GUI class
 class stockGUI:
@@ -50,26 +51,59 @@ class stockGUI:
                 self.e.insert(END, text)
 
 
-marketIndex = getMarketIndex()
+# checks if conditions are met, and runs the program if so
+def checkIfConditionsAreMet():
+    marketIndex = getMarketIndex()
 
-minVal = 20
-for j in range(len(marketIndex)):
-    value = float(marketIndex[j][1][:-1])
-    marketIndex[j][1] = value
+    whatToCheck = sys.argv[1]
+    operator = sys.argv[2]
+    threshold = float(sys.argv[3])
 
-    if value < minVal:
-        minVal = value
+    minVal = 20
+    maxVal = -20
+    sum = 0
+    for j in range(len(marketIndex)):
+        value = float(marketIndex[j][1][:-1])
+        marketIndex[j][1] = value
+        sum += value
 
-# check if minimum change value is below threshold
-if minVal > -10:
-    exit()
+        if value < minVal:
+            minVal = value
 
-# sort marketIndex list by second element in every sublist
-marketIndex.sort(key=lambda x: x[1])
+        if value > maxVal:
+            maxVal = value
 
-root = Tk()
-myGUI = stockGUI(root)
-root.mainloop()
+    # exit program if conditions are not met
+    if whatToCheck == "sum":
+        if operator == "gt":
+            if sum <= threshold:
+                exit()
+        elif operator == "lt":
+            if sum >= threshold:
+                exit()
+    elif whatToCheck == "value":
+        if operator == "gt":
+            if maxVal <= threshold:
+                exit()
+        elif operator == "lt":
+            if minVal >= threshold:
+                exit()
+
+    # sort marketIndex list by second element in every sublist
+    marketIndex.sort(key=lambda x: x[1])
+
+    runProgram()
+
+# runs the GUI
+def runProgram():
+    root = Tk()
+    myGUI = stockGUI(root)
+    root.mainloop()
+
+
+checkIfConditionsAreMet()
+
+
 
 
 
