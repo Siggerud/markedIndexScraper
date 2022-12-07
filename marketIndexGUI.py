@@ -1,17 +1,19 @@
+# this program will check if a certain index is below a threshold. Good tool for
+# keeping track of cheap funds/ETFs
+
 from marketIndexScraper import getMarketIndex
 from tkinter import *
-from tkinter import ttk
 
-
+# layout for GUI class
 class stockGUI:
     def __init__(self, master):
         self.master = master
         self.master.title("Index change list")
         self.master.geometry("350x800")
 
-        self.addMarketIndicesLabels()
+        self.addMarketIndicesEntries()
 
-
+    # check if change is positive or negative, and give distint color
     def checkChangeValue(self, changeValue):
         if changeValue >= 0:
             return "green"
@@ -19,7 +21,8 @@ class stockGUI:
             return "red"
 
 
-    def addMarketIndicesLabels(self):
+    # adds entries for each market index
+    def addMarketIndicesEntries(self):
         master = self.master
 
         header1Label = Label(master, text="Market index", font=('Arial', 12, 'bold'))
@@ -41,6 +44,7 @@ class stockGUI:
                     textColor = self.checkChangeValue(changeValue)
                     width = 10
 
+                # add every market index in a grid
                 self.e = Entry(master, width=width, fg=textColor, font=('Arial', 10, 'normal'))
                 self.e.grid(row=i+1, column=j, sticky="w")
                 self.e.insert(END, text)
@@ -56,9 +60,11 @@ for j in range(len(marketIndex)):
     if value < minVal:
         minVal = value
 
+# check if minimum change value is below threshold
 if minVal > -10:
     exit()
 
+# sort marketIndex list by second element in every sublist
 marketIndex.sort(key=lambda x: x[1])
 
 root = Tk()

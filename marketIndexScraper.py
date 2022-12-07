@@ -1,3 +1,5 @@
+# this function scrapes the finance site of yahoo for changes in the top market indices
+# and returns the result in a nested list
 def getMarketIndex():
     import requests
     from bs4 import BeautifulSoup
