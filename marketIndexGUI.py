@@ -50,11 +50,11 @@ class stockGUI:
                 self.e.grid(row=i+1, column=j, sticky="w")
                 self.e.insert(END, text)
 
+# define marketIndex list
+marketIndex = getMarketIndex()
 
 # checks if conditions are met, and runs the program if so
 def checkIfConditionsAreMet():
-    marketIndex = getMarketIndex()
-
     whatToCheck = sys.argv[1]
     operator = sys.argv[2]
     threshold = float(sys.argv[3])
